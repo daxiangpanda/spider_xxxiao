@@ -5,6 +5,11 @@ import os
 import urllib2
 from bs4 import BeautifulSoup
 import process_soup
+
+import sys
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+
 url = 'http://m.xxxiao.com/'
 def getlist():
     html = urlfunc.url_open(url)
@@ -17,19 +22,25 @@ def getlist():
     return result
 
 def crawler(area,url):
+
+    # print area
     if not os.path.isdir(area):
         os.mkdir(area)
     page = 0
     while True:
-        url_area = url+'page/'+str(page)
+        url_area = url+'/page/'+str(page)
         print url_area
+
         try:
             soup = urlfunc.url_open(url_area)
-            print area
-            print url_area
-            path_area = os.path.join(area,url_area.split('/')[-1])
-            print path_area
-
+            print 'area '+area
+            print 'url_area '+url_area
+            path_area = area+'/'+url_area.split('/')[-1]
+            print dir(path_area)
+            print type(path_area)
+            print 'path_area '+path_area
+            if not os.path.isdir(path_area):
+                os.mkdir(path_area)
             webpage_info = process_soup.process_1(soup)
             for name,url in webpage_info.items():
                 path_webpage = os.path.join(path_area, name)
@@ -42,6 +53,7 @@ def crawler(area,url):
 
 
 list_all = getlist()
-for i in range(len(list_all)):
-    crawler(list_all.keys()[i],list_all.values()[i])
-
+for a,b in list_all.items():
+    if a==u'三笑首页':
+        continue
+    crawler(a,b)
