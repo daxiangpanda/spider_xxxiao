@@ -11,7 +11,10 @@ def save(data,pic_name,path_webpage):
         f.write(data)
 def process_1(soup):
     res = {}
-    for i in soup.find_all('h2',class_='entry-title'):
+    list_tiezi = soup.find_all('h2',class_='entry-title')
+    if len(list_tiezi) == 0:
+        return []
+    for i in list_tiezi:
         res[i.find('a').string]=i.find('a')['href']
     print res
     for a,b in res.items():

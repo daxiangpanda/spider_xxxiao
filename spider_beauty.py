@@ -42,6 +42,8 @@ def crawler(area,url):
             if not os.path.isdir(path_area):
                 os.mkdir(path_area)
             webpage_info = process_soup.process_1(soup)
+            if not len(webpage_info):
+                break
             for name,url in webpage_info.items():
                 path_webpage = os.path.join(path_area, name)
                 process_soup.process_2(path_webpage,url)
@@ -54,6 +56,4 @@ def crawler(area,url):
 
 list_all = getlist()
 for a,b in list_all.items():
-    if a==u'三笑首页':
-        continue
     crawler(a,b)
